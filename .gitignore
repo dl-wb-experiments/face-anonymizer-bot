@@ -130,3 +130,9 @@ dmypy.json
 
 # IDE
 .idea
+
+# Data paths
+data/*
+
+# Configuration .env files
+*.env
