@@ -108,8 +108,8 @@ def cancel(update: Update, context: CallbackContext) -> int:
 
 def main() -> None:
     """Start the bot."""
-    # Create the Updater and pass it your bot's token.
-    token = os.environ.get('TELEGRAM_TOKEN')
+    with open('app/token') as token_file:
+        token = token_file.readline()
     updater = Updater(token)
 
     # Get the dispatcher to register handlers
