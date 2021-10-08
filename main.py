@@ -110,6 +110,7 @@ def main() -> None:
     """Start the bot."""
     with open('app/token') as token_file:
         token = token_file.readline()
+    print(token)
     updater = Updater(token)
 
     # Get the dispatcher to register handlers
@@ -119,9 +120,6 @@ def main() -> None:
         entry_points=[CommandHandler('start', select_anonymization_type)],
 
         states={
-            # BotConversationState.start.value: [
-            #     CallbackQueryHandler(handle_anonymization_type),
-            # ],
             BotConversationState.select_anonymization_type.value: [
                 CallbackQueryHandler(handle_anonymization_type),
             ],
