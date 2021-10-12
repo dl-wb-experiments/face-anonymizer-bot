@@ -1,3 +1,4 @@
+import pathlib
 from pathlib import Path
 
 from app.constants import Emotion
@@ -14,7 +15,7 @@ class OpenVINOModelPaths(TypedDict):
 
 
 class Config:
-    _data_path: Path = Path('/Users/demidovs/Documents/Work/repositories/face-anonymizer-bot/data')
+    _data_path: Path = pathlib.Path(__file__).parent.parent.resolve() / 'data'
     _models_path: Path = _data_path / 'models'
 
     face_detection_model = OpenVINOModelPaths(

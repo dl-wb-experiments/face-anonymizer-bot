@@ -1,5 +1,0 @@
-face_detection_model_xml = '/Users/atugarev/Downloads/ubuntu18_deployment_package_CPU_python3.6_python3.7_python3.8_with_model_face-detection-adas-0001/face-detection-adas-0001/face-detection-adas-0001.xml'
-face_detection_model_bin = '/Users/atugarev/Downloads/ubuntu18_deployment_package_CPU_python3.6_python3.7_python3.8_with_model_face-detection-adas-0001/face-detection-adas-0001/face-detection-adas-0001.bin'
-
-emotion_recognition_model_xml = '/Users/atugarev/Downloads/ubuntu18_deployment_package_CPU_python3.6_python3.7_python3.8_with_model_face-detection-adas-0001/emotions-recognition-retail-0003/FP16/emotions-recognition-retail-0003.xml'
-emotion_recognition_model_bin = '/Users/atugarev/Downloads/ubuntu18_deployment_package_CPU_python3.6_python3.7_python3.8_with_model_face-detection-adas-0001/emotions-recognition-retail-0003/FP16/emotions-recognition-retail-0003.bin'
