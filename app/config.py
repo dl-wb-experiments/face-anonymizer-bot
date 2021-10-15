@@ -1,8 +1,10 @@
+import os
 import pathlib
 from pathlib import Path
 
 from app.constants import Emotion
-from typing import Dict
+from typing import Dict, Optional
+
 try:
     from typing import TypedDict
 except ImportError:
@@ -10,22 +12,21 @@ except ImportError:
 
 
 class OpenVINOModelPaths(TypedDict):
-    xml_path: Path
-    bin_path: Path
+    xml_path: Optional[Path]
+    bin_path: Optional[Path]
 
 
 class Config:
     _data_path: Path = pathlib.Path(__file__).parent.parent.resolve() / 'data'
-    _models_path: Path = _data_path / 'models'
 
     face_detection_model = OpenVINOModelPaths(
-        xml_path=_models_path / 'face-detection-adas-0001.xml',
-        bin_path=_models_path / 'face-detection-adas-0001.bin',
+        xml_path=os.environ.get('FACE_DETECTION_XML_FILE_PATH'),
+        bin_path=os.environ.get('FACE_DETECTION_BIN_FILE_PATH'),
     )
 
     emotion_recognition_model = OpenVINOModelPaths(
-        xml_path=_models_path / 'emotions-recognition-retail-0003.xml',
-        bin_path=_models_path / 'emotions-recognition-retail-0003.bin',
+        xml_path=os.environ.get('EMOTION_RECOGNITION_XML_FILE_PATH'),
+        bin_path=os.environ.get('EMOTION_RECOGNITION_BIN_FILE_PATH'),
     )
 
     device: str = 'CPU'

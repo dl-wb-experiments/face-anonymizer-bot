@@ -24,7 +24,7 @@ class BaseFaceAnonymizer(metaclass=ABCMeta):
     def process_image(cls, input_file_path: str, output_file_path: str):
         original_image = cls.load_image(input_file_path)
 
-        processed_image = cls.process_single_frame(original_image)
+        processed_image = cls.process_single_frame(original_image) if cls._face_detector.is_ready else original_image
 
         cv2.imwrite(filename=output_file_path, img=processed_image)
 
@@ -99,9 +99,9 @@ class BaseFaceAnonymizer(metaclass=ABCMeta):
                 if not return_code:
                     break
 
-                processed_image = cls.process_single_frame(original_frame)
+                cls.process_single_frame(original_frame) if cls._face_detector.is_ready else original_frame
 
-                output_video_stream.write(processed_image)
+                output_video_stream.write(original_frame)
         finally:
             input_video_stream.release()
             output_video_stream.release()
@@ -125,25 +125,7 @@ class BlurFaceAnonymizer(BaseFaceAnonymizer):
 
     @classmethod
     def blur_faces(cls, face_detection_inference_results: np.ndarray, original_frame: np.ndarray):
-        # Get the original image size
-        original_image_height, original_image_width, _ = original_frame.shape
-
-        # Prepare the resulting image to not affect the original image
-        processed_image = original_frame.copy()
-
-        # 1. Parse the model inference results
-        detected_faces = cls.parse_face_detection_results(face_detection_inference_results,
-                                                          original_image_width,
-                                                          original_image_height)
-
-        # 2. Iterate through the faces and blur each face
-        for detected_face in detected_faces:
-            xmin, ymin, xmax, ymax, _ = detected_face
-            face = original_frame[ymin:ymax, xmin:xmax]
-            blurry_face = cls.blur(face)
-            processed_image[ymin:ymax, xmin:xmax] = blurry_face
-
-        return processed_image
+        return original_frame
 
     @classmethod
     def blur(cls, image: np.ndarray) -> np.ndarray:
@@ -178,31 +160,7 @@ class EmotionFaceAnonymizer(BaseFaceAnonymizer):
 
     @classmethod
     def process_single_frame(cls, original_frame: np.ndarray) -> np.ndarray:
-
-        # Prepare the resulting image to not affect the original image
-        processed_image = original_frame.copy()
-
-        face_detection_inference_results = cls.face_detector_inference(original_frame)
-
-        # Get the original image size
-        original_image_height, original_image_width, _ = original_frame.shape
-
-        detected_faces = cls.parse_face_detection_results(face_detection_inference_results,
-                                                          original_image_width,
-                                                          original_image_height)
-
-        for detected_face in detected_faces:
-            xmin, ymin, xmax, ymax, confidence = detected_face
-
-            face = original_frame[ymin:ymax, xmin:xmax]
-
-            emotion_predictions = cls.emotion_recognizer_inference(face)
-
-            # Replace the face with the corresponding emoji
-            processed_face = cls.put_emoji_on_top_of_face(emotion_predictions, face)
-
-            processed_image[ymin:ymax, xmin:xmax] = processed_face
-        return processed_image
+        return original_frame
 
     @staticmethod
     def get_emoji_by_index(emotion_inference_result: np.ndarray) -> np.ndarray:

@@ -39,7 +39,7 @@ def handle_anonymization_type_handler(update: Update, context: CallbackContext) 
     query.answer()
     selected_anonymization_type = AnonymizeType(query.data)
     context.user_data['anonymization_type'] = selected_anonymization_type
-    query.edit_message_text(text=f'Selected anonymization type: {selected_anonymization_type}')
+    query.edit_message_text(text=f'Selected anonymization type: {selected_anonymization_type.value}')
     query.message.reply_text('Upload photo or video you want to anonymize')
     return BotConversationState.upload_media
 

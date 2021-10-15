@@ -14,12 +14,22 @@ class IEngine(metaclass=MetaSingleton):
     def __init__(self):
         ie_core = IECoreWrapper().ie_core
 
-        self._network = ie_core.read_network(
-            self._model_path['xml_path'],
-            self._model_path['bin_path']
-        )
+        self._network = None
+        self._executable_network = None
 
-        self._executable_network = ie_core.load_network(self._network, 'CPU')
+        if self._model_path['xml_path'] and self._model_path['bin_path']:
+            self._network = ie_core.read_network(
+                self._model_path['xml_path'],
+                self._model_path['bin_path']
+            )
+
+            self._executable_network = ie_core.load_network(self._network, 'CPU')
+        else:
+            print(f'IENetwork and ExecutableNetwork was not initialized for {self.__class__}')
+
+    @property
+    def is_ready(self) -> bool:
+        return self._network and self._executable_network
 
     @property
     def input_shape(self) -> InputShapeType:
