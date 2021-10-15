@@ -99,9 +99,9 @@ class BaseFaceAnonymizer(metaclass=ABCMeta):
                 if not return_code:
                     break
 
-                cls.process_single_frame(original_frame) if cls._face_detector.is_ready else original_frame
+                processed_image = cls.process_single_frame(original_frame) if cls._face_detector.is_ready else original_frame
 
-                output_video_stream.write(original_frame)
+                output_video_stream.write(processed_image)
         finally:
             input_video_stream.release()
             output_video_stream.release()
@@ -124,8 +124,8 @@ class BlurFaceAnonymizer(BaseFaceAnonymizer):
         return processed_image
 
     @classmethod
-    def blur_faces(cls, face_detection_inference_results: np.ndarray, original_frame: np.ndarray):
-        return original_frame
+    def blur_faces(cls, face_detection_inference_results: np.ndarray, original_image: np.ndarray):
+        return original_image
 
     @classmethod
     def blur(cls, image: np.ndarray) -> np.ndarray:
