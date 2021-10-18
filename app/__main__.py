@@ -6,10 +6,8 @@ from app.handlers import (select_anonymization_type_handler, stop_handler, handl
                           start_handler, process_media_handler)
 
 
-def main() -> None:
+def main(token) -> None:
     """Start the bot."""
-    with open('app/token') as token_file:
-        token = token_file.readline()
 
     updater = Updater(token)
 
